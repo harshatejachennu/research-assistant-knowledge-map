@@ -1,61 +1,132 @@
-# Research Assistant & Knowledge Map (RAKM)
+Research Assistant & Knowledge Map (RAKM)
+Why I Built This
 
-## Overview
+While studying for different classes, I kept running into the same problem: I could read long documents and notes, but it was hard to quickly see what the main ideas were and how everything connected. I wanted a tool that helped me learn faster, and I also wanted something meaningful to build for my college portfolio.
 
-RAKM is a lightweight research‑assistant tool written in Python that transforms a collection of academic documents into an accessible summary and a visual concept map.  It was designed as a portfolio‑quality project for college applications and demonstrates skills in natural language processing, algorithm implementation, information retrieval, and data visualization.  Unlike typical examples that rely on heavy machine‑learning libraries, RAKM implements key components such as keyword extraction and extractive summarization from scratch using only built‑in or commonly available Python libraries.
+So I created RAKM — a small research assistant that summarizes documents, pulls out the important phrases, and turns them into a visual concept map. I built the core algorithms myself because I wanted to actually understand how these techniques work instead of relying on large black-box AI models.
 
-The application performs three core tasks:
+This project represents the kind of learning I enjoy most: breaking things down, building them from scratch, and creating tools I can actually use.
 
-1. **Keyword extraction** – RAKM implements the Rapid Automatic Keyword Extraction (RAKE) algorithm to identify important multi‑word phrases in the source text.  RAKE is a frequency‑based, unsupervised method that generates candidate phrases by grouping together non‑stopwords and then scores them by word frequency and degree (the number of co‑occurrences across phrases)【303286152743780†L35-L53】.  This approach allows RAKM to highlight the main topics of a document without any external training data.
+Overview
 
-2. **Extractive summarization** – To condense long documents into a digestible synopsis, RAKM uses a custom implementation of the TextRank algorithm.  TextRank treats each sentence as a node in a graph and connects nodes based on their similarity.  It then applies the PageRank algorithm to identify the most central sentences.  The top‑ranked sentences form the summary.  Extractive methods like TextRank preserve the original wording and work without training data【810671135289267†L27-L48】.
+RAKM is a lightweight Python tool that takes academic text (PDF or .txt) and produces:
 
-3. **Concept map generation** – Once key phrases have been extracted, RAKM computes co‑occurrence relationships between them and builds a concept map.  Nodes represent keywords and edges represent co‑occurrence counts.  The map is rendered using `matplotlib`, positioning nodes on a circle and drawing edges whose thickness corresponds to the strength of the relationship.  Although RAKM does not use the NetworkX library directly, the concept and visualization draw on graph‑analysis ideas: NetworkX is a Python library that creates and analyzes graph structures and provides basic visualization tools【405925609694343†L27-L34】.
+A clean extractive summary
 
-Optionally, RAKM can answer user questions about the input text.  It embeds sentences and queries into a high‑dimensional vector space and uses cosine similarity to retrieve the most relevant sentences.  This retrieval‑based approach is inspired by the idea behind semantic search: embedding both the corpus and the query into the same vector space and then finding the nearest neighbours【985493886905673†L546-L550】.
+A set of keyword phrases
 
-## Features
+A generated concept map
 
-* **PDF and plain‑text support** – RAKM accepts either plain‑text files or PDF documents.  PDF files are converted to text using the system utility `pdftotext` (available on most Linux systems).  If `pdftotext` is missing, the user can provide a `.txt` file instead.
-* **Stopword handling** – A built‑in list of English stopwords (based on NLTK’s English stopword list) is bundled with the project, so the program works offline.
-* **Configurable summarization** – Users can specify how many sentences should appear in the summary.  The TextRank implementation is generic and can accommodate different damping factors or convergence criteria if desired.
-* **Concept map image output** – The generated concept map is saved as `concept_map.png` in the output directory.  Nodes are labelled and edges are scaled by co‑occurrence frequency.
-* **Question answering** – An optional interactive mode allows users to ask questions about the document.  The tool performs a simple semantic search using TF–IDF similarity to return the most relevant sentences.
+An optional Q&A mode using semantic search
 
-## Installation
+Unlike many modern NLP projects, RAKM does not rely on heavy machine-learning frameworks. The core pieces — keyword extraction, TextRank summarization, and TF–IDF retrieval — are implemented manually using only common Python libraries. The goal was to make something educational and transparent, while still being genuinely useful.
 
-RAKM is self‑contained and relies only on Python 3.11 and a few standard libraries (`numpy`, `scipy`, `matplotlib`).  It does not require internet access or external data downloads.
+How It Works (Simple Explanation)
 
-1. Ensure Python 3 is installed on your system.
-2. If you plan to process PDF documents, make sure the `pdftotext` utility is available (it is included in Poppler; install via your package manager on Linux, e.g., `sudo apt‑get install poppler-utils`).
-3. Clone or download the `research_assistant_project` directory.
+RAKM performs three main tasks:
 
-## Usage
+1. Keyword Extraction (RAKE-style)
 
-Run the tool from the command line:
+I implemented a version of the RAKE algorithm, which:
 
-```bash
-python main.py --input path/to/document.pdf --summary summary.txt --map concept_map.png --sentences 5
-```
+Splits text into candidate phrases
 
-Arguments:
+Removes stopwords
 
-* `--input` – Path to the input file.  Accepts `.pdf` or `.txt` files.
-* `--summary` – Path to the output summary file.  If omitted, the summary is printed to stdout.
-* `--map` – Path to save the concept map image.  If omitted, no image is generated.
-* `--sentences` – Number of sentences to include in the summary (default 5).
-* `--qa` – Activate interactive question‑answering mode after summarization.
+Scores phrases based on word frequency and co-occurrence
 
-Example:
+This highlights recurring multi-word ideas without requiring any training data.
 
-```bash
-python main.py --input samples/sample_article.txt --summary sample_summary.txt --map sample_concept_map.png --sentences 3 --qa
-```
+2. Extractive Summarization (TextRank)
 
-This command processes a sample article, writes a three‑sentence summary to `sample_summary.txt`, generates a concept map image called `sample_concept_map.png`, and then starts an interactive Q&A session on the processed document.
+To summarize the document, each sentence is:
 
-## Citation and Acknowledgements
+Converted into a vector
 
-RAKM’s keyword extraction is based on the Rapid Automatic Keyword Extraction (RAKE) algorithm, which generates key phrases by grouping contiguous non‑stopwords and scores them using word frequency and co‑occurrence【303286152743780†L35-L53】.  The summarization component implements the TextRank algorithm, an unsupervised extractive summarization technique that builds a graph of sentences and ranks them using PageRank【810671135289267†L27-L48】.  The idea of representing text for question answering via vector embeddings and retrieving similar sentences draws inspiration from the semantic search approach described in the Sentence Transformers documentation【985493886905673†L546-L550】.  The concept of graph visualization and analysis is motivated by the NetworkX library’s use for creating and analysing graph structures【405925609694343†L27-L34】.
+Compared to every other sentence
 
-This project was developed as part of a college‑application portfolio to showcase a combination of algorithm design, natural language processing, and data‑visualization skills.
+Represented as a graph
+
+Ranked using a PageRank-style algorithm
+
+The highest-ranked sentences become the summary. This preserves the original wording and works entirely without machine-learning models.
+
+3. Concept Map Generation
+
+After extracting phrases, RAKM looks at how often they appear together and builds a small graph:
+
+Nodes = key phrases
+
+Edges = how often phrases co-occur
+
+Edge thickness = strength of relationship
+
+The result is a visual map of how ideas relate to each other.
+
+4. Optional Q&A (Semantic Search)
+
+Using TF–IDF + cosine similarity, RAKM retrieves the most relevant sentences to any question the user asks. It’s a simple but surprisingly effective way to “query” a document.
+
+Features
+
+Works with PDF or plain text
+
+Built-in stopword list
+
+Configurable summary length
+
+Auto-generated concept map image
+
+Optional interactive Q&A mode
+
+Completely offline (no external AI models)
+
+Installation
+
+This project requires Python 3 and a few standard libraries:
+
+python -m pip install numpy scipy matplotlib
+
+
+If you're using PDFs, install pdftotext (part of Poppler).
+
+Place the project folder anywhere you like.
+
+Usage
+Basic use:
+python3 main.py --input path/to/document.txt --summary summary.txt --map concept_map.png --sentences 5
+
+With Q&A mode enabled:
+python3 main.py --input samples/sample_article.txt --summary sample_summary.txt --map sample_concept_map.png --sentences 3 --qa
+
+What I Learned
+
+Building this project taught me a lot about:
+
+How keyword extraction actually works
+
+Why graph-based ranking (PageRank/TextRank) is effective
+
+How TF–IDF encodes meaning numerically
+
+How to build vector-similarity search from scratch
+
+How to visualize idea connections in a document
+
+How to structure a real-world Python project
+
+Most importantly, I learned how to break down textbook algorithms and rebuild them myself into something I can use for school and studying.
+
+Acknowledgments
+
+RAKM’s design draws inspiration from several foundational NLP techniques:
+
+RAKE for keyword extraction
+
+TextRank for extractive summarization
+
+TF–IDF and cosine similarity for document retrieval
+
+Graph visualization concepts similar to tools like NetworkX
+
+All implementations are written manually using basic Python tools for transparency and learning purposes.
