@@ -1,0 +1,1 @@
+In healthcare, machine learning models can help detect diseases earlier and personalise treatments. In environmental science, AI techniques can analyse satellite imagery to monitor deforestation and predict extreme weather events.

@@ -1,0 +1,1 @@
+Systems based on machine learning are now commonplace in fields ranging from healthcare and finance to transportation and entertainment. In healthcare, machine learning models can help detect diseases earlier and personalise treatments. In environmental science, AI techniques can analyse satellite imagery to monitor deforestation and predict extreme weather events.
