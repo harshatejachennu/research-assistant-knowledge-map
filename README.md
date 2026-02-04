@@ -3,7 +3,7 @@ Why I Built This
 
 While studying for different classes, I kept running into the same problem: I could read long documents and notes, but it was hard to quickly see what the main ideas were and how everything connected. I wanted a tool that helped me learn faster, and I also wanted something meaningful to build for my college portfolio.
 
-So I created RAKM — a small research assistant that summarizes documents, pulls out the important phrases, and turns them into a visual concept map. I built the core algorithms myself because I wanted to actually understand how these techniques work instead of relying on large black-box AI models.
+So I created RAKM, a small research assistant that summarizes documents, pulls out the important phrases, and turns them into a visual concept map. I built the core algorithms myself because I wanted to actually understand how these techniques work instead of relying on large black-box AI models.
 
 This project represents the kind of learning I enjoy most: breaking things down, building them from scratch, and creating tools I can actually use.
 
@@ -35,7 +35,7 @@ Removes stopwords
 
 Scores phrases based on word frequency and co-occurrence
 
-This highlights recurring multi-word ideas without requiring any training data.
+This emphasizes recurring multi-word ideas without requiring any training data.
 
 2. Extractive Summarization (TextRank)
 
@@ -115,7 +115,7 @@ How to visualize idea connections in a document
 
 How to structure a real-world Python project
 
-Most importantly, I learned how to break down textbook algorithms and rebuild them myself into something I can use for school and studying.
+Most importantly, I learned how to break down textbook algorithms and rebuild them myself into something I can use for projects and studying.
 
 Acknowledgments
 
